@@ -31,6 +31,19 @@ def main() -> int:
     if not LINE.strip():
         print("error: entry line must not be only whitespace", file=sys.stderr)
         return 1
+    if LINE != LINE.strip():
+        print(
+            "error: entry line must not have leading or trailing whitespace",
+            file=sys.stderr,
+        )
+        return 1
+    if any(ord(ch) < 0x20 and ch != "\t" for ch in LINE):
+        print(
+            "error: entry line must not contain control characters "
+            "(other than tab)",
+            file=sys.stderr,
+        )
+        return 1
 
     with open(out_path, "w", encoding="utf-8") as handle:
         handle.write(LINE + "\n")
